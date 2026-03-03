@@ -1,0 +1,8 @@
+{
+  "frontend/index.html": "HTML entry point with CDN script tags for jsPDF, jsPDF-AutoTable, and SheetJS loaded before the React app.",
+  "frontend/src/types/globals.d.ts": "TypeScript ambient declarations for CDN-loaded window globals: jspdf namespace (jsPDF class with autoTable), and XLSXStatic interface for SheetJS.",
+  "frontend/src/utils/exportPDF.ts": "PDF export utilities using window.jspdf (CDN-loaded) instead of npm imports; creates daily, weekly, monthly, and stock PDF reports with professional headers and footers.",
+  "frontend/src/utils/exportExcel.ts": "Excel export utilities using window.XLSX (CDN-loaded SheetJS) instead of npm imports; creates daily, weekly, monthly, and stock .xlsx files.",
+  "frontend/src/pages/ExportReportsPage.tsx": "Export Reports page with report type tabs (daily/weekly/monthly/stock), date/period selectors, PDF and Excel export buttons, and a quick-export toolbar.",
+  "frontend/src/App.tsx": "Root application component that renders the Layout with navigation state, switches between the 5 page components, and seeds sample data to localStorage and backend on first load."
+}

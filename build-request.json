@@ -1,0 +1,253 @@
+{
+  "kind": "build_request",
+  "title": "Sales Report Manager – Full ERP Web App",
+  "projectName": "Sales Report Manager",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a Motoko backend actor that stores daily sales entries keyed by date and salesman. Each entry should hold: loadNumber (Text), totalBills (Nat), salesValue (Float), daySales (Float), stockValue (Float), stockQty (Nat). Expose CRUD functions: saveDailyEntry, getDailyEntry, getEntriesByWeek, getEntriesByMonth. Also store purchase/stock records with fields: productName (Text), purchaseDate (Text), quantity (Nat), purchaseRate (Float), totalPurchaseValue (Float). Expose: addPurchase, getPurchases, getAllPurchases.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Use localStorage to persist all data",
+          "Add products to stock with fields: Product Name, Purchase Date, Quantity (pieces), Purchase Rate (₹), Total Purchase Value"
+        ]
+      },
+      "acceptanceCriteria": [
+        "saveDailyEntry stores a record retrievable by date + salesman key",
+        "getEntriesByWeek returns all entries for Mon–Sat of the given week",
+        "getEntriesByMonth returns all entries for the given month/year",
+        "addPurchase stores a product purchase record",
+        "getPurchases returns all purchase records",
+        "All functions return stable, upgradeable data structures"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a dark left sidebar navigation with a navy-blue and white professional ERP color scheme. Sidebar sections: Dashboard (Daily), Weekly Report, Monthly Report, Purchase & Stock, Export Reports. Active section should be highlighted. The overall layout must feel like a desktop ERP application with a fixed sidebar and a main content area. Use navy blue (#1e3a5f), white, and subtle grays as the primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Dark sidebar navigation with sections: Dashboard (Daily), Weekly Report, Monthly Report, Purchase & Stock, Export Reports",
+          "Professional color scheme (navy blue, white, subtle grays)",
+          "The app should feel like a proper business ERP/reporting tool"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sidebar is fixed on the left and always visible",
+        "All 5 navigation sections are present and functional",
+        "Active section is visually highlighted",
+        "Color palette uses navy blue, white, and subtle grays throughout"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Build the Dashboard / Daily Report View. On load, auto-detect the current day of week and display the correct beat (area) for each of the 6 salesman based on the hardcoded schedule below. If today is Sunday, display a 'Weekly Off' message instead of the table. Include a date picker to view/edit any specific day. The salesman beat schedule is: SURAJ (Mon/Thu: BAWADA TOP, Tue/Fri: RUIKAR COLONY TOP, Wed/Sat: STAND TOP), MUNNA (Mon: SHAHUPURI, Tue: SHIVAJI MARKET, Wed: WHOLESALE, Thu: LAKSHMIPURI, Fri: SOMWAR PETH, Sat: MANGALWAR PETH D), CHANDRADEEP (Mon: SHANIWAR PETH C, Tue: STATION ROAD, Wed: RUIKAR COLONY, Thu: SHIVAJI PETH CC AND SHIVAJI PETH A, Fri: SHAHUPURI, Sat: NEW SHAHUPURI), SANTOSH (Mon: LAKSHYATIRTH, Tue: SANE GURUJI VASAHAT, Wed: SANE GURUJI 2, Thu: SHIVAJI PETH B, Fri: MANGALWAR PETH A, Sat: MANGALWAR PETH B1), SAGAR (Mon: BAVADA, Tue: K.BAWADA, Wed: NEW PALACE RD, Thu: KADAMWADI, Fri: MUKTSAINIK VASAHAT, Sat: LINE BAZAR), SUHAS (Mon/Thu: NAGALA PARK TOP, Tue/Fri: MUKTASAINIK TOP, Wed/Sat: MANGALWAR PETH TOP). The table columns must be: Salesman Name, Beat (auto-filled), Load Number (editable), Total Bills (editable number), Total Sales Value ₹ (editable number), Day Sales (editable), Stock Value ₹ (editable), Stock Qty (editable), Total Sales (calculated cumulative). Include a summary row with column totals. Include a 'Save Daily Data' button that persists the entries.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Auto-detect current day of week and show the correct beat (area) for each salesman",
+          "Date picker to view/edit any specific day",
+          "Save daily data button",
+          "Summary row showing totals for all salesman",
+          "Sunday should show a 'Weekly Off' message"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All 6 salesman rows appear with correct beats auto-populated for today's day",
+        "Beat column is read-only and auto-filled",
+        "Load Number, Total Bills, Sales Value, Day Sales, Stock Value, Stock Qty are all editable inputs",
+        "Total Sales column shows a calculated cumulative value",
+        "Summary row shows column totals",
+        "Date picker changes the view and auto-updates beats for the selected day",
+        "Save button persists data to backend (and localStorage as fallback)",
+        "Sunday shows a 'Weekly Off' message instead of the table"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the Weekly Report View. Allow the user to select any week (Mon–Sat) using a week picker or date-based selector. Display all 6 salesman's data for each day of the selected week. Columns: Salesman, Beat, Load No., Total Bills, Sales Value ₹, Day Sales, Total Sales, Stock Value, Stock Qty. Show weekly totals per salesman as a subtotal row and grand totals at the bottom. Use date-fns for all date range calculations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Select any week (Mon–Sat)",
+          "Display all 6 salesman's data for each day of the selected week",
+          "Weekly totals per salesman and grand totals"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Week selector allows navigating to any past or future week",
+        "Table shows 6 days × 6 salesman entries",
+        "Per-salesman weekly subtotal rows are shown",
+        "Grand total row at the bottom aggregates all salesman",
+        "All monetary values are formatted with ₹ symbol"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Build the Monthly Report View. Allow user to select a month and year. Show aggregated data per salesman for the entire selected month. Columns: Salesman, Total Bills, Total Sales Value ₹, Total Days Worked, Average Daily Sales. Include a monthly grand totals row. Use date-fns for month range calculations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Select month and year",
+          "Aggregated data per salesman for the entire month",
+          "Show total bills, total sales value, total days worked, average daily sales",
+          "Monthly grand totals"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Month and year selector is present",
+        "One row per salesman with correct monthly aggregations",
+        "Total Days Worked counts days with at least one entry",
+        "Average Daily Sales is calculated as Total Sales Value / Total Days Worked",
+        "Grand totals row is shown at the bottom"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Build the Purchase & Stock Management view. Include a form to add new product purchases with fields: Product Name, Purchase Date, Quantity (pieces), Purchase Rate ₹, Total Purchase Value (auto-calculated as Qty × Rate). Below the form, display a current stock table with columns: Product, Opening Stock, Purchased, Sold, Closing Stock (Opening + Purchased – Sold), Stock Value ₹. Also show a stock history log listing all past purchase entries sorted by date descending.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Add products to stock with fields: Product Name, Purchase Date, Quantity (pieces), Purchase Rate (₹), Total Purchase Value",
+          "Current stock table showing: Product, Opening Stock, Purchased, Sold, Closing Stock, Stock Value",
+          "Stock history log"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Add product form validates all required fields before saving",
+        "Total Purchase Value auto-calculates from Qty × Rate",
+        "Current stock table shows correct Closing Stock = Opening + Purchased – Sold",
+        "Stock history log lists all purchase records with dates",
+        "Data persists across page refreshes"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Build the Export Reports view. Integrate jsPDF and jsPDF-autotable for PDF export and SheetJS (xlsx) for Excel export. Provide export buttons for: Daily Report (selected date) to PDF and Excel, Weekly Report (selected week) to PDF and Excel, Monthly Report (selected month) to PDF and Excel, Stock Report to PDF and Excel. PDF exports should use a professional company-style layout with a header, table formatting, and footer with page numbers. Excel exports should use the latest .xlsx format with formatted column headers. All monetary values must show the ₹ symbol.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Export Daily, Weekly, Monthly reports to PDF (well formatted with company-style layout, using jsPDF + jsPDF-AutoTable)",
+          "Excel (.xlsx format using SheetJS / xlsx library, latest format)",
+          "Export stock report to PDF and Excel",
+          "Integrate jsPDF and jsPDF-autotable for PDF export",
+          "Integrate SheetJS (xlsx) for Excel export"
+        ]
+      },
+      "acceptanceCriteria": [
+        "PDF export for daily report generates a downloadable .pdf file with table and header",
+        "Excel export for daily report generates a downloadable .xlsx file",
+        "PDF export for weekly report includes all 6 salesman rows across the week",
+        "PDF export for monthly report shows aggregated monthly data",
+        "Stock report exports to both PDF and Excel",
+        "All exports include ₹ symbol for monetary columns",
+        "PDF files include a company-style header and page numbers"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Pre-populate the application with sample data for demonstration purposes on first load. Generate realistic sample entries covering the past 2 weeks for all 6 salesman, with plausible values for Load Number, Total Bills, Sales Value, Day Sales, Stock Value, and Stock Qty. Also add 3–5 sample purchase/stock records. This sample data should only be seeded if no existing data is found in storage.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Pre-populate with some sample data for demonstration purposes so the app looks functional on first load"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On first load with no existing data, sample entries are visible in the Daily Report for today",
+        "Weekly and Monthly report views show aggregated sample data",
+        "Purchase & Stock view shows sample product entries",
+        "Sample data seeding does not overwrite user-entered data on subsequent loads"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply form validation across all data entry forms. For the daily entry table: Load Number must be a non-empty text, Total Bills and Stock Qty must be non-negative integers, Sales Value, Day Sales, and Stock Value must be non-negative numbers. For the purchase form: all fields are required, Quantity and Purchase Rate must be positive numbers. Display inline error messages below invalid fields. Disable the Save/Add button until the form is valid.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Form validation for data entry"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Save button is disabled when required fields are empty or invalid",
+        "Inline error messages appear below invalid fields",
+        "Negative numbers are rejected for bills, quantities, and monetary fields",
+        "Purchase form requires all fields before allowing submission"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Design a professional, consistent visual theme throughout the application: navy blue (#1e3a5f) sidebar, white main content area, subtle light gray (#f1f5f9) backgrounds for table rows, dark text, and accent colors for action buttons (navy/teal). Tables must have proper borders, alternating row shading, and sticky header rows for long tables. Monetary values must always be prefixed with ₹ and formatted with Indian number formatting (e.g., ₹1,23,456.00). The overall aesthetic must feel like a professional business ERP desktop tool.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Professional color scheme (navy blue, white, subtle grays)",
+          "Responsive table layouts with proper borders",
+          "All monetary values in Indian Rupees (₹)",
+          "The app should feel like a proper business ERP/reporting tool"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sidebar uses navy blue background with white text",
+        "Tables use alternating row shading and visible borders",
+        "All monetary values are formatted as ₹X,XX,XXX.XX using Indian numbering",
+        "Action buttons are consistently styled with navy/teal accent color",
+        "Long tables have sticky header rows"
+      ]
+    }
+  ],
+  "constraints": [
+    "All 6 salesman beat schedules must be hardcoded exactly as specified — do not allow editing of the schedule in the UI",
+    "Sunday must always display a 'Weekly Off' message in the Daily Report view",
+    "PDF export must use jsPDF + jsPDF-autotable; Excel export must use SheetJS (xlsx) in .xlsx format",
+    "All monetary values must use Indian Rupee (₹) symbol and Indian number formatting",
+    "Data must persist using localStorage as the primary client-side store, synced with the Motoko backend"
+  ],
+  "nonGoals": [
+    "Multi-user authentication or role-based access control",
+    "Cloud or external database storage",
+    "Real-time collaboration or WebSocket features",
+    "Mobile-first or responsive mobile layout (desktop ERP focus only)",
+    "Editing or configuring the salesman beat schedule via the UI",
+    "Email or SMS notifications for reports"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Professional business ERP logo mark — navy blue and white minimal icon with a bar chart or ledger motif (app-logo.dim_128x128.png)"
+    ],
+    "edits": []
+  }
+}

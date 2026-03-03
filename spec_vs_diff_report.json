@@ -1,0 +1,80 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-03-03T05:59:30.068Z",
+  "summary": "The diff implements the vast majority of requirements. The Motoko backend, frontend pages, beat schedule, export utilities, validation, sample data, and visual theme are all present. However, a few specific acceptance criteria have gaps: the backend uses non-stable data structures risking upgrade data loss, the Purchase & Stock page lacks Opening Stock and Sold columns, the Daily Report Total Sales cumulative column is not clearly evidenced, and sticky table headers are missing. A hallucinated Internet Identity auth flow was also added despite auth being explicitly a non-goal.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "All functions return stable, upgradeable data structures",
+      "reason": "The Motoko backend uses Map.empty and List.empty assigned to let bindings without the stable keyword, meaning data will be lost on canister upgrades. The AC explicitly requires stable, upgradeable data structures.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Total Sales column shows a calculated cumulative value",
+      "reason": "The DashboardPage diff is truncated and there is no evidence that a Total Sales cumulative column is computed and displayed. The RowData interface does not include a totalSales field.",
+      "evidence": [
+        "frontend/src/pages/DashboardPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Current stock table shows correct Closing Stock = Opening + Purchased minus Sold, with columns: Product, Opening Stock, Purchased, Sold, Closing Stock, Stock Value",
+      "reason": "The PurchaseStockPage buildStockSummary only tracks totalPurchased and totalValue with no Opening Stock or Sold fields, so Closing Stock cannot be correctly computed per the AC.",
+      "evidence": [
+        "frontend/src/pages/PurchaseStockPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Long tables have sticky header rows",
+      "reason": "The CSS and table implementations do not show evidence of sticky thead or th positioning for long tables.",
+      "evidence": [
+        "frontend/src/index.css"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Full Internet Identity authentication integration with AuthClient, login flow, identity delegation, and InternetIdentityProvider wrapping the entire app",
+      "reason": "The build request explicitly lists multi-user authentication and role-based access control as a non-goal, yet a complete Internet Identity auth system is implemented and applied globally.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/main.tsx",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/ExportReportsPage.tsx",
+    "frontend/src/pages/MonthlyReportPage.tsx",
+    "frontend/src/pages/PurchaseStockPage.tsx",
+    "frontend/src/pages/WeeklyReportPage.tsx",
+    "frontend/src/types/globals.d.ts",
+    "frontend/src/utils/beatSchedule.ts",
+    "frontend/src/utils/exportExcel.ts",
+    "frontend/src/utils/exportPDF.ts",
+    "frontend/src/utils/formatCurrency.ts",
+    "frontend/src/utils/sampleData.ts",
+    "frontend/src/utils/validation.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

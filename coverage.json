@@ -1,0 +1,265 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-03-03T05:59:30.072Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 10,
+    "implemented": 9,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Create a Motoko backend actor that stores daily sales entries keyed by date and salesman. Each entry should hold: loadNumber (Text), totalBills (Nat), salesValue (Float), daySales (Float), stockValue (Float), stockQty (Nat). Expose CRUD functions: saveDailyEntry, getDailyEntry, getEntriesByWeek, getEntriesByMonth. Also store purchase/stock records with fields: productName (Text), purchaseDate (Text), quantity (Nat), purchaseRate (Float), totalPurchaseValue (Float). Expose: addPurchase, getPurchases, getAllPurchases.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-10",
+        "summary": "Design a professional, consistent visual theme throughout the application: navy blue (#1e3a5f) sidebar, white main content area, subtle light gray (#f1f5f9) backgrounds for table rows, dark text, and accent colors for action buttons (navy/teal). Tables must have proper borders, alternating row shading, and sticky header rows for long tables. Monetary values must always be prefixed with ₹ and formatted with Indian number formatting (e.g., ₹1,23,456.00). The overall aesthetic must feel like a professional business ERP desktop tool.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/formatCurrency.ts",
+          "frontend/src/index.css",
+          "frontend/src/components/DataTable.tsx",
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/pages/WeeklyReportPage.tsx",
+          "frontend/src/pages/MonthlyReportPage.tsx",
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/formatCurrency.ts",
+          "frontend/src/index.css",
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/pages/WeeklyReportPage.tsx",
+          "frontend/src/pages/MonthlyReportPage.tsx",
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Implement a dark left sidebar navigation with a navy-blue and white professional ERP color scheme. Sidebar sections: Dashboard (Daily), Weekly Report, Monthly Report, Purchase & Stock, Export Reports. Active section should be highlighted. The overall layout must feel like a desktop ERP application with a fixed sidebar and a main content area. Use navy blue (#1e3a5f), white, and subtle grays as the primary palette.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Layout.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/index.css"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Layout.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/index.css"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Build the Dashboard / Daily Report View. On load, auto-detect the current day of week and display the correct beat (area) for each of the 6 salesman based on the hardcoded schedule below. If today is Sunday, display a 'Weekly Off' message instead of the table. Include a date picker to view/edit any specific day. The salesman beat schedule is: SURAJ (Mon/Thu: BAWADA TOP, Tue/Fri: RUIKAR COLONY TOP, Wed/Sat: STAND TOP), MUNNA (Mon: SHAHUPURI, Tue: SHIVAJI MARKET, Wed: WHOLESALE, Thu: LAKSHMIPURI, Fri: SOMWAR PETH, Sat: MANGALWAR PETH D), CHANDRADEEP (Mon: SHANIWAR PETH C, Tue: STATION ROAD, Wed: RUIKAR COLONY, Thu: SHIVAJI PETH CC AND SHIVAJI PETH A, Fri: SHAHUPURI, Sat: NEW SHAHUPURI), SANTOSH (Mon: LAKSHYATIRTH, Tue: SANE GURUJI VASAHAT, Wed: SANE GURUJI 2, Thu: SHIVAJI PETH B, Fri: MANGALWAR PETH A, Sat: MANGALWAR PETH B1), SAGAR (Mon: BAVADA, Tue: K.BAWADA, Wed: NEW PALACE RD, Thu: KADAMWADI, Fri: MUKTSAINIK VASAHAT, Sat: LINE BAZAR), SUHAS (Mon/Thu: NAGALA PARK TOP, Tue/Fri: MUKTASAINIK TOP, Wed/Sat: MANGALWAR PETH TOP). The table columns must be: Salesman Name, Beat (auto-filled), Load Number (editable), Total Bills (editable number), Total Sales Value ₹ (editable number), Day Sales (editable), Stock Value ₹ (editable), Stock Qty (editable), Total Sales (calculated cumulative). Include a summary row with column totals. Include a 'Save Daily Data' button that persists the entries.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/beatSchedule.ts",
+          "frontend/src/hooks/useDailyEntries.ts",
+          "frontend/src/pages/DashboardPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/beatSchedule.ts",
+          "frontend/src/pages/DashboardPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Build the Weekly Report View. Allow the user to select any week (Mon–Sat) using a week picker or date-based selector. Display all 6 salesman's data for each day of the selected week. Columns: Salesman, Beat, Load No., Total Bills, Sales Value ₹, Day Sales, Total Sales, Stock Value, Stock Qty. Show weekly totals per salesman as a subtotal row and grand totals at the bottom. Use date-fns for all date range calculations.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useWeeklyEntries.ts",
+          "frontend/src/pages/WeeklyReportPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/WeeklyReportPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Build the Monthly Report View. Allow user to select a month and year. Show aggregated data per salesman for the entire selected month. Columns: Salesman, Total Bills, Total Sales Value ₹, Total Days Worked, Average Daily Sales. Include a monthly grand totals row. Use date-fns for month range calculations.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useMonthlyEntries.ts",
+          "frontend/src/pages/MonthlyReportPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/MonthlyReportPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Build the Purchase & Stock Management view. Include a form to add new product purchases with fields: Product Name, Purchase Date, Quantity (pieces), Purchase Rate ₹, Total Purchase Value (auto-calculated as Qty × Rate). Below the form, display a current stock table with columns: Product, Opening Stock, Purchased, Sold, Closing Stock (Opening + Purchased – Sold), Stock Value ₹. Also show a stock history log listing all past purchase entries sorted by date descending.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/usePurchases.ts",
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Build the Export Reports view. Integrate jsPDF and jsPDF-autotable for PDF export and SheetJS (xlsx) for Excel export. Provide export buttons for: Daily Report (selected date) to PDF and Excel, Weekly Report (selected week) to PDF and Excel, Monthly Report (selected month) to PDF and Excel, Stock Report to PDF and Excel. PDF exports should use a professional company-style layout with a header, table formatting, and footer with page numbers. Excel exports should use the latest .xlsx format with formatted column headers. All monetary values must show the ₹ symbol.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/exportPDF.ts",
+          "frontend/src/utils/exportExcel.ts",
+          "frontend/src/pages/ExportReportsPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/exportPDF.ts",
+          "frontend/src/utils/exportExcel.ts",
+          "frontend/src/pages/ExportReportsPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "Pre-populate the application with sample data for demonstration purposes on first load. Generate realistic sample entries covering the past 2 weeks for all 6 salesman, with plausible values for Load Number, Total Bills, Sales Value, Day Sales, Stock Value, and Stock Qty. Also add 3–5 sample purchase/stock records. This sample data should only be seeded if no existing data is found in storage.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/sampleData.ts",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/sampleData.ts",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Apply form validation across all data entry forms. For the daily entry table: Load Number must be a non-empty text, Total Bills and Stock Qty must be non-negative integers, Sales Value, Day Sales, and Stock Value must be non-negative numbers. For the purchase form: all fields are required, Quantity and Purchase Rate must be positive numbers. Display inline error messages below invalid fields. Disable the Save/Add button until the form is valid.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/validation.ts",
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/validation.ts",
+          "frontend/src/pages/DashboardPage.tsx",
+          "frontend/src/pages/PurchaseStockPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "build-request.json",
+    "build-template/Dockerfile",
+    "build-template/LICENSE",
+    "build-template/README.md",
+    "build-template/deploy.sh",
+    "build-template/icp.yaml",
+    "build-template/package.json",
+    "build-template/pnpm-lock.yaml",
+    "build-template/pnpm-workspace.yaml",
+    "build-template/scripts/prune-unused-images.js",
+    "build-template/scripts/resize-images.js",
+    "build-template/src/backend/canister.yaml",
+    "build-template/src/backend/system-idl/aaaaa-aa.did",
+    "build-template/src/frontend/canister.yaml",
+    "build-template/src/frontend/components.json",
+    "build-template/src/frontend/env.json",
+    "build-template/src/frontend/eslint-rules/no-bigint-in-query-keys.js",
+    "build-template/src/frontend/eslint-rules/require-internet-identity-provider.js",
+    "build-template/src/frontend/eslint.config.js",
+    "build-template/src/frontend/package.json",
+    "build-template/src/frontend/postcss.config.js",
+    "build-template/src/frontend/src/components/ui/accordion.tsx",
+    "build-template/src/frontend/src/components/ui/alert-dialog.tsx",
+    "build-template/src/frontend/src/components/ui/alert.tsx",
+    "build-template/src/frontend/src/components/ui/aspect-ratio.tsx",
+    "build-template/src/frontend/src/components/ui/avatar.tsx",
+    "build-template/src/frontend/src/components/ui/badge.tsx",
+    "build-template/src/frontend/src/components/ui/breadcrumb.tsx",
+    "build-template/src/frontend/src/components/ui/button.tsx",
+    "build-template/src/frontend/src/components/ui/calendar.tsx",
+    "build-template/src/frontend/src/components/ui/card.tsx",
+    "build-template/src/frontend/src/components/ui/carousel.tsx",
+    "build-template/src/frontend/src/components/ui/chart.tsx",
+    "build-template/src/frontend/src/components/ui/checkbox.tsx",
+    "build-template/src/frontend/src/components/ui/collapsible.tsx",
+    "build-template/src/frontend/src/components/ui/command.tsx",
+    "build-template/src/frontend/src/components/ui/context-menu.tsx",
+    "build-template/src/frontend/src/components/ui/dialog.tsx",
+    "build-template/src/frontend/src/components/ui/drawer.tsx",
+    "build-template/src/frontend/src/components/ui/dropdown-menu.tsx",
+    "build-template/src/frontend/src/components/ui/form.tsx",
+    "build-template/src/frontend/src/components/ui/hover-card.tsx",
+    "build-template/src/frontend/src/components/ui/input-otp.tsx",
+    "build-template/src/frontend/src/components/ui/input.tsx",
+    "build-template/src/frontend/src/components/ui/label.tsx",
+    "build-template/src/frontend/src/components/ui/menubar.tsx",
+    "build-template/src/frontend/src/components/ui/navigation-menu.tsx",
+    "build-template/src/frontend/src/components/ui/pagination.tsx",
+    "build-template/src/frontend/src/components/ui/popover.tsx",
+    "build-template/src/frontend/src/components/ui/progress.tsx",
+    "build-template/src/frontend/src/components/ui/radio-group.tsx",
+    "build-template/src/frontend/src/components/ui/resizable.tsx",
+    "build-template/src/frontend/src/components/ui/scroll-area.tsx",
+    "build-template/src/frontend/src/components/ui/select.tsx",
+    "build-template/src/frontend/src/components/ui/separator.tsx",
+    "build-template/src/frontend/src/components/ui/sheet.tsx",
+    "build-template/src/frontend/src/components/ui/sidebar.tsx",
+    "build-template/src/frontend/src/components/ui/skeleton.tsx",
+    "build-template/src/frontend/src/components/ui/slider.tsx",
+    "build-template/src/frontend/src/components/ui/sonner.tsx",
+    "build-template/src/frontend/src/components/ui/switch.tsx",
+    "build-template/src/frontend/src/components/ui/table.tsx",
+    "build-template/src/frontend/src/components/ui/tabs.tsx",
+    "build-template/src/frontend/src/components/ui/textarea.tsx",
+    "build-template/src/frontend/src/components/ui/toggle-group.tsx",
+    "build-template/src/frontend/src/components/ui/toggle.tsx",
+    "build-template/src/frontend/src/components/ui/tooltip.tsx",
+    "build-template/src/frontend/src/hooks/use-mobile.tsx",
+    "build-template/src/frontend/src/lib/utils.ts",
+    "build-template/src/frontend/tsconfig.json",
+    "build-template/src/frontend/vite.config.js",
+    "build-template/tsconfig.json",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/public/assets/generated/app-logo.dim_128x128.png",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/config.ts",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/ExportReportsPage.tsx",
+    "frontend/src/pages/MonthlyReportPage.tsx",
+    "frontend/src/pages/PurchaseStockPage.tsx",
+    "frontend/src/pages/WeeklyReportPage.tsx",
+    "frontend/src/types/globals.d.ts",
+    "frontend/src/ui-summary.json",
+    "frontend/src/utils/StorageClient.ts",
+    "frontend/src/utils/beatSchedule.ts",
+    "frontend/src/utils/exportExcel.ts",
+    "frontend/src/utils/exportPDF.ts",
+    "frontend/src/utils/formatCurrency.ts",
+    "frontend/src/utils/sampleData.ts",
+    "frontend/src/utils/validation.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Sales Report Manager – Full ERP Web App Frontend Implementation",
+  "requirements": [
+    {
+      "id": "REQ-2",
+      "summary": "Implement dark sidebar navigation with navy-blue ERP color scheme and fixed layout",
+      "acceptanceCriteria": [
+        "Sidebar is fixed on the left and always visible",
+        "All 5 navigation sections are present and functional",
+        "Active section is visually highlighted",
+        "Color palette uses navy blue, white, and subtle grays throughout"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "create",
+          "description": "Create ERP layout component with fixed dark sidebar navigation containing 5 sections: Dashboard (Daily), Weekly Report, Monthly Report, Purchase & Stock, Export Reports. Use navy blue (#1e3a5f) background for sidebar, white text, and highlight active section. Main content area uses white background. Import and display generated app-logo from frontend/public/assets/generated/app-logo.dim_128x128.png in sidebar header."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Layout component as the root wrapper. Set up React Router with routes for all 5 navigation sections: / (Dashboard), /weekly, /monthly, /stock, /export. Pass active route state to Layout for highlighting."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add global CSS variables for ERP color scheme: navy blue (#1e3a5f), white, light gray (#f1f5f9). Define styles for sidebar, professional business aesthetic, and table borders. Ensure desktop-focused layout with no mobile-first responsive breakpoints."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build Dashboard/Daily Report View with auto-detected beats, editable fields, and weekly-off handling",
+      "acceptanceCriteria": [
+        "All 6 salesman rows appear with correct beats auto-populated for today's day",
+        "Beat column is read-only and auto-filled",
+        "Load Number, Total Bills, Sales Value, Day Sales, Stock Value, Stock Qty are all editable inputs",
+        "Total Sales column shows a calculated cumulative value",
+        "Summary row shows column totals",
+        "Date picker changes the view and auto-updates beats for the selected day",
+        "Save button persists data to backend (and localStorage as fallback)",
+        "Sunday shows a 'Weekly Off' message instead of the table"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/beatSchedule.ts",
+          "operation": "create",
+          "description": "Export hardcoded beat schedule mapping for all 6 salesman (SURAJ, MUNNA, CHANDRADEEP, SANTOSH, SAGAR, SUHAS) with their Mon–Sat beats. Export a getBeatForDay(salesman, dayOfWeek) utility function. Include all beat assignments exactly as specified in the BuildRequest."
+        },
+        {
+          "path": "frontend/src/hooks/useDailyEntries.ts",
+          "operation": "create",
+          "description": "Custom hook to fetch, update, and save daily sales entries for a selected date. Call backend.getDailyEntry for each salesman. On save, call backend.saveDailyEntry for each row and also persist to localStorage as fallback. Return entries array, loading state, save function, and error state."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Create Dashboard (Daily Report) page. Use date-fns to detect current day. If Sunday, render 'Weekly Off' message. Otherwise, render a date picker and table with 6 salesman rows. Auto-populate Beat column using beatSchedule utility. Render editable inputs for Load Number, Total Bills, Sales Value, Day Sales, Stock Value, Stock Qty. Calculate Total Sales as cumulative. Add summary row with column totals. Include 'Save Daily Data' button that calls useDailyEntries save function."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build Weekly Report View with week selector and aggregated data for all 6 salesman",
+      "acceptanceCriteria": [
+        "Week selector allows navigating to any past or future week",
+        "Table shows 6 days × 6 salesman entries",
+        "Per-salesman weekly subtotal rows are shown",
+        "Grand total row at the bottom aggregates all salesman",
+        "All monetary values are formatted with ₹ symbol"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useWeeklyEntries.ts",
+          "operation": "create",
+          "description": "Custom hook to fetch weekly entries (Mon–Sat) for a selected week. Use date-fns to calculate week start/end dates. Call backend.getEntriesByWeek with the week identifier. Return entries array grouped by salesman and day, loading state, and error state."
+        },
+        {
+          "path": "frontend/src/pages/WeeklyReportPage.tsx",
+          "operation": "create",
+          "description": "Create Weekly Report page with week selector (date picker or custom week navigation). Use useWeeklyEntries hook to fetch data. Render table with columns: Salesman, Beat, Load No., Total Bills, Sales Value ₹, Day Sales, Total Sales, Stock Value, Stock Qty. Show 6 days × 6 salesman entries. Include per-salesman weekly subtotal rows and grand totals at bottom. Format all monetary values with ₹ symbol using Indian number formatting."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Build Monthly Report View with month/year selector and aggregated salesman data",
+      "acceptanceCriteria": [
+        "Month and year selector is present",
+        "One row per salesman with correct monthly aggregations",
+        "Total Days Worked counts days with at least one entry",
+        "Average Daily Sales is calculated as Total Sales Value / Total Days Worked",
+        "Grand totals row is shown at the bottom"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useMonthlyEntries.ts",
+          "operation": "create",
+          "description": "Custom hook to fetch monthly entries for a selected month/year. Use date-fns to format month identifier. Call backend.getEntriesByMonth. Aggregate data per salesman: Total Bills, Total Sales Value, Total Days Worked (count unique dates), Average Daily Sales. Return aggregated array, loading state, and error state."
+        },
+        {
+          "path": "frontend/src/pages/MonthlyReportPage.tsx",
+          "operation": "create",
+          "description": "Create Monthly Report page with month and year selector. Use useMonthlyEntries hook. Render table with columns: Salesman, Total Bills, Total Sales Value ₹, Total Days Worked, Average Daily Sales. Show one row per salesman with aggregated monthly data. Include grand totals row at bottom. Format monetary values with ₹ symbol."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Build Purchase & Stock Management view with add form, current stock table, and history log",
+      "acceptanceCriteria": [
+        "Add product form validates all required fields before saving",
+        "Total Purchase Value auto-calculates from Qty × Rate",
+        "Current stock table shows correct Closing Stock = Opening + Purchased – Sold",
+        "Stock history log lists all purchase records with dates",
+        "Data persists across page refreshes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/usePurchases.ts",
+          "operation": "create",
+          "description": "Custom hook to fetch and add purchase records. Call backend.getAllPurchases to fetch all records. Provide addPurchase function that calls backend.addPurchase and also persists to localStorage as fallback. Return purchases array, addPurchase function, loading state, and error state."
+        },
+        {
+          "path": "frontend/src/pages/PurchaseStockPage.tsx",
+          "operation": "create",
+          "description": "Create Purchase & Stock page. Render form with fields: Product Name, Purchase Date, Quantity (pieces), Purchase Rate ₹, Total Purchase Value (auto-calculated as Qty × Rate). Use usePurchases hook to add new entries. Below form, render current stock table with columns: Product, Opening Stock, Purchased, Sold, Closing Stock (Opening + Purchased – Sold), Stock Value ₹. Below that, render stock history log listing all purchase entries sorted by date descending. Validate all fields before allowing save."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Build Export Reports view with PDF and Excel export for Daily, Weekly, Monthly, and Stock reports",
+      "acceptanceCriteria": [
+        "PDF export for daily report generates a downloadable .pdf file with table and header",
+        "Excel export for daily report generates a downloadable .xlsx file",
+        "PDF export for weekly report includes all 6 salesman rows across the week",
+        "PDF export for monthly report shows aggregated monthly data",
+        "Stock report exports to both PDF and Excel",
+        "All exports include ₹ symbol for monetary columns",
+        "PDF files include a company-style header and page numbers"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/exportPDF.ts",
+          "operation": "create",
+          "description": "Export utility functions using jsPDF and jsPDF-autotable. Create functions: exportDailyPDF(entries, date), exportWeeklyPDF(entries, weekStart, weekEnd), exportMonthlyPDF(aggregated, month, year), exportStockPDF(purchases). Use professional company-style layout with header showing app name and logo, formatted tables, and footer with page numbers. Include ₹ symbol for all monetary columns."
+        },
+        {
+          "path": "frontend/src/utils/exportExcel.ts",
+          "operation": "create",
+          "description": "Export utility functions using SheetJS (xlsx) library. Create functions: exportDailyExcel(entries, date), exportWeeklyExcel(entries, weekStart, weekEnd), exportMonthlyExcel(aggregated, month, year), exportStockExcel(purchases). Generate .xlsx files with formatted column headers and ₹ symbol for monetary columns."
+        },
+        {
+          "path": "frontend/src/pages/ExportReportsPage.tsx",
+          "operation": "create",
+          "description": "Create Export Reports page. Provide selectors for report type (Daily, Weekly, Monthly, Stock) and date/week/month range. Render export buttons for PDF and Excel. On button click, fetch relevant data using appropriate hooks, then call exportPDF or exportExcel utilities. Display loading state during export generation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Pre-populate sample data for demonstration on first load",
+      "acceptanceCriteria": [
+        "On first load with no existing data, sample entries are visible in the Daily Report for today",
+        "Weekly and Monthly report views show aggregated sample data",
+        "Purchase & Stock view shows sample product entries",
+        "Sample data seeding does not overwrite user-entered data on subsequent loads"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/sampleData.ts",
+          "operation": "create",
+          "description": "Export sample data generator functions. Generate realistic sample daily sales entries for all 6 salesman covering the past 2 weeks with plausible Load Number, Total Bills, Sales Value, Day Sales, Stock Value, Stock Qty values. Generate 3–5 sample purchase records with Product Name, Purchase Date, Quantity, Purchase Rate, Total Purchase Value. Export functions: generateSampleDailyEntries(), generateSamplePurchases()."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "On app initialization, check localStorage for existing data. If no data exists, call sampleData generators and persist sample entries to localStorage and backend using saveDailyEntry and addPurchase backend methods. Ensure seeding only runs once on first load."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Apply form validation across all data entry forms with inline error messages",
+      "acceptanceCriteria": [
+        "Save button is disabled when required fields are empty or invalid",
+        "Inline error messages appear below invalid fields",
+        "Negative numbers are rejected for bills, quantities, and monetary fields",
+        "Purchase form requires all fields before allowing submission"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/validation.ts",
+          "operation": "create",
+          "description": "Export validation functions for daily entry and purchase forms. For daily entry: validateLoadNumber(text), validateTotalBills(nat), validateSalesValue(float), validateStockQty(nat). For purchase: validateProductName(text), validateQuantity(nat), validatePurchaseRate(float). All validators return {valid: boolean, error?: string}. Reject negative numbers for numeric fields."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Integrate validation utilities for daily entry table inputs. Display inline error messages below invalid fields. Disable 'Save Daily Data' button until all rows are valid. Use validation.ts functions for Load Number, Total Bills, Sales Value, Stock Qty fields."
+        },
+        {
+          "path": "frontend/src/pages/PurchaseStockPage.tsx",
+          "operation": "modify",
+          "description": "Integrate validation utilities for purchase form. Display inline error messages for invalid fields. Disable 'Add' button until all required fields (Product Name, Purchase Date, Quantity, Purchase Rate) are valid. Use validation.ts functions."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Design professional visual theme with navy blue palette, formatted tables, and Indian currency formatting",
+      "acceptanceCriteria": [
+        "Sidebar uses navy blue background with white text",
+        "Tables use alternating row shading and visible borders",
+        "All monetary values are formatted as ₹X,XX,XXX.XX using Indian numbering",
+        "Action buttons are consistently styled with navy/teal accent color",
+        "Long tables have sticky header rows"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/formatCurrency.ts",
+          "operation": "create",
+          "description": "Export formatIndianCurrency(amount: number) function that formats monetary values with ₹ symbol using Indian number formatting (e.g., ₹1,23,456.00). Use Intl.NumberFormat with 'en-IN' locale for correct comma placement."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Extend global styles with professional ERP theme: navy blue sidebar (#1e3a5f), white main content area, light gray table row shading (#f1f5f9), alternating row backgrounds, visible table borders, sticky header rows for long tables. Define consistent action button styles with navy/teal accent color. Ensure desktop-focused layout with proper spacing and typography for business ERP aesthetic."
+        },
+        {
+          "path": "frontend/src/components/DataTable.tsx",
+          "operation": "create",
+          "description": "Create reusable DataTable component with professional styling: visible borders, alternating row shading, sticky header row. Accept columns config and data array as props. Apply formatIndianCurrency to monetary columns automatically. Use throughout all report pages for consistent table styling."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Replace inline table markup with DataTable component. Apply formatIndianCurrency utility to all monetary columns (Sales Value, Day Sales, Stock Value, Total Sales)."
+        },
+        {
+          "path": "frontend/src/pages/WeeklyReportPage.tsx",
+          "operation": "modify",
+          "description": "Replace inline table markup with DataTable component. Apply formatIndianCurrency utility to all monetary columns."
+        },
+        {
+          "path": "frontend/src/pages/MonthlyReportPage.tsx",
+          "operation": "modify",
+          "description": "Replace inline table markup with DataTable component. Apply formatIndianCurrency utility to all monetary columns."
+        },
+        {
+          "path": "frontend/src/pages/PurchaseStockPage.tsx",
+          "operation": "modify",
+          "description": "Use DataTable component for current stock table and stock history log. Apply formatIndianCurrency utility to monetary columns (Purchase Rate, Total Purchase Value, Stock Value)."
+        }
+      ]
+    }
+  ]
+}
